@@ -91,10 +91,7 @@ module.exports = {
                 userId: req.userLogin._id
             }).populate('userId')
             .then((result) => {
-                console.log(result);
-
                 res.status(200).json({
-
                     result
                 })
             })
@@ -120,8 +117,6 @@ module.exports = {
 
     addComments: (req, res) => {
         let idArticle = req.params.id
-        console.log('masuk palk eko');
-
         let obj = {
             commenterId: req.userLogin._id,
             commenterName: req.userLogin.name,
@@ -143,31 +138,30 @@ module.exports = {
     },
     deleteComment: (req, res) => {
         let idArticle = req.params.id
-        let idComment = req.params.idComment
+        let idComment = req.params.idcomment
         Article.findOne({
                 _id: idArticle
             })
             .then((result) => {
                 if (result) {
                     let confirm = false
-                    result.comment.forEach(element => {
-                        if (String(element.commenterId) === String(req.userLogin._id)) {
+                    result.comments.forEach(element => {
+                        if (String(element.commenterId) == String(req.userLogin._id)) {
                             confirm = true
                         }
                     });
-                    if (String(result.userId) === String(req.userLogin._id) || confirm) {
+                   
+                    if (String(result.userId) == String(req.userLogin._id) || confirm) {
                         Article.updateOne({
                                 _id: idArticle
                             }, {
                                 $pull: {
-                                    comment
-                                    
-                                    
+                                   comments : {_id : idComment}
                                 }
                             })
-                            .then((result) => {
+                            .then((updated) => {
                                 res.status(201).json({
-                                    result
+                                    updated
                                 })
                             }).catch((err) => {
                                 res.status(400).json(err)

@@ -16,7 +16,7 @@ let idArticle = ''
 let idComment = ''
 let idCommenter = ''
 describe('Article', function () {
-    this.timeout(10000)
+    this.timeout(100000)
 
     before(function (done) {
         mongoose.connect(process.env.test, {
@@ -195,12 +195,8 @@ describe('Article', function () {
         chai.request(app)
             .get(`/articles/${idArticle}/detailarticle`)
             .end(function(err, res) {
-                console.log(res.body);
                 idComment = res.body.comments[0]._id
                 idCommenter = res.body.comments[0].commenterId
-                console.log(idCommenter);
-                console.log(idComment);
-                
                 expect(res).to.have.status(200)
                 expect(res.body).to.be.a('object')
                 expect(res.body).to.have.property('_id')
@@ -227,7 +223,25 @@ describe('Article', function () {
 
     it('PUT /articles/:id/comment/:idComment/delete should delete a comment', function(done){
         chai.request(app)
-            .put(`/articles/${idArticle}/comment/`)
+            .put(`/articles/${idArticle}/comment/${idComment}/delete`)
+            .set('token', token)
+            .end(function(err, res){
+                expect(res).to.have.status(201)
+                expect(res.body.updated).to.be.a('object')
+                expect(res.body.updated).to.have.property('n')
+                expect(res.body.updated).to.have.property('nModified')
+                expect(res.body.updated).to.have.property('opTime')
+                expect(res.body.updated).to.have.property('electionId')
+                expect(res.body.updated).to.have.property('ok')
+                expect(res.body.updated.n).to.equal(1)
+                expect(res.body.updated.nModified).to.equal(1)
+                expect(res.body.updated.ok).to.equal(1)
+
+                done()
+            })
+
+
+
     })
 
     it('DELETE /articles/:id should delete a selected article', function(done){
