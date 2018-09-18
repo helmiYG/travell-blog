@@ -24,7 +24,6 @@ describe('Users', function () {
                         password: hash
                     })
                     .then((result) => {
-                        console.log(result, 'ini before');
                         done()
                     })
                     .catch((err) => {
@@ -99,7 +98,6 @@ describe('Users', function () {
         .then((result) => {
             User.collection.drop()
             .then((result) => {
-                console.log('masuk after');
                 done()
             })
             .catch((err) => {
