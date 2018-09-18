@@ -13,11 +13,18 @@ module.exports = {
             password: hash
         })
         .then((result) => {
-            res.status(201).json({
-                result,
-                msg: 'register succes'
-            })
-            
+            if (result) {
+                res.status(201).json({
+                    result,
+                    msg: 'register succes'
+                })
+            } else {
+                res.status(400).json({
+                    msg :'email duplicated / value is null',
+                    err
+                })
+            }
+          
         })
         .catch((err) => {
             res.status(400).json({
