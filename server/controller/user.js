@@ -54,12 +54,12 @@ module.exports = {
                     })
                 } else {
                     res.status(400).json({
-                        msg: 'password salah pak ekoooo'
+                        msg: 'password wrong'
                     })
                 }
             } else {
                 res.status(400).json({
-                    msg: 'user ga ada pak ekoooo'
+                    msg: 'user not found'
                 })
             }
         })

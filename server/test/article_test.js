@@ -10,14 +10,14 @@ const User = require('../models/user');
 const Article = require('../models/article');
 require('dotenv').config()
 
-let token = ''
-let idUser = ''
-let idArticle = ''
-let idComment = ''
-let idCommenter = ''
+
 describe('Article', function () {
     this.timeout(100000)
-
+    let token = ''
+    let idUser = ''
+    let idArticle = ''
+    let idComment = ''
+    let idCommenter = ''
     before(function (done) {
         mongoose.connect(process.env.test, {
                 useNewUrlParser: true
