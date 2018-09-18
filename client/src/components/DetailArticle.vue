@@ -15,9 +15,9 @@
                                 <h1>{{show[0].title}}</h1>
                                 <p> {{show[0].content}}</p>
                                 <br><br>
-                                <router-link :to="`/myStory/${show.id}/edit`" v-if="token">
+                                <router-link :to="`/myStory/${show.id}/edit`" v-if="gettoken">
                                 <button class="btn btn-success btn-xs">EDIT</button></router-link>||
-                                <button class="btn btn-danger btn-xs" v-if="token">DELETE</button>
+                                <button class="btn btn-danger btn-xs" v-if="gettoken">DELETE</button>
                             </div>
                     </div>
             </div>
@@ -26,11 +26,10 @@
         <br>
         <h3>All Comment</h3>
         <h1> {{this.$route.params.id}} </h1>
-        <h1> {{getisloginfromhome}} </h1>
         <div class="row">
         </div>
-        {{token}}
-        <div style="margin-top : 10px" v-if="token">
+        {{gettoken}}
+        <div style="margin-top : 10px" v-if="gettoken">
             <label> Input Comment </label><br>
             <input type="text" style="height : 40px; width : 900px">
             <button type="submit" class="btn btn-success">  Comment </button>
@@ -42,7 +41,7 @@
 
 <script>
 export default {
-  props: ['getisloginfromhome'],
+  props: ['gettoken'],
   data () {
     return {
       articles: [

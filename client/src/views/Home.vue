@@ -3,8 +3,7 @@
     <div class="container">
       <div class="row">
         <Widget></Widget>
-        <router-view></router-view>
-        <h1>{{isloginfromapp}}</h1>
+        <router-view :gettoken="token"></router-view>
       </div>
     </div>
   </div>
@@ -23,18 +22,16 @@ export default {
   data () {
     return {
       login: this.isloginfromapp,
-      isloginfromapptest: localStorage.getItem('token')
+      token: ''
     }
   },
-  props: ['isloginfromapp'],
   watch: {
-    isloginfromapp (val) {
-      console.log(val);
-      console.log('kampret', val)
-    },
-    '$route'(to, from) {
-      console.log('aaaaaaaß');
-    }
+    
+  },
+  created() {
+    const isToken = localStorage.getItem('token')
+    this.token = isToken
+    this.$emit('sendtokenfromhome', this.token)
   }
 }
 </script>

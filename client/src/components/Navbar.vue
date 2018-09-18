@@ -13,7 +13,7 @@
             </li>
             <li class="nav-item">
               <a class="nav-link">
-                 <router-link class="route-link" to="/myarticles">My Articles</router-link>
+                 <router-link class="route-link" to="/myarticles" v-if="token">My Articles</router-link>
               </a>
             </li>
             <li class="nav-item">
@@ -58,16 +58,12 @@ export default {
   },
   created () {
     let isToken = localStorage.getItem('token')
-    console.log('masuk');
-    console.log(isToken);
-    
     if (isToken) {
       this.token = true
     }
   },
   watch: {
     isloginfromapp () {
-      console.log('masuk navbar')
       this.token = true
     },
 

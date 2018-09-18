@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Navbar :isloginfromapp="islogin"></Navbar>
-      <router-view @senttokenfromlogin="gettokenfromlogin" :isloginfromapp="islogin"></router-view>
+      <router-view @sendtokenfromhome="gettokenfromhome"></router-view>
     <Footer></Footer>
   </div>
 </template>
@@ -21,9 +21,7 @@ export default {
     }
   },
   methods: {
-    gettokenfromlogin (value) {
-      console.log(value);
-      
+    gettokenfromhome (value) {
       if (value) {
         if (this.islogin) {
           this.islogin = false

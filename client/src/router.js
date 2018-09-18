@@ -30,7 +30,14 @@ export default new Router({
     {
       path: '/myarticles',
       name: 'myarticles',
-      component: () => import('./views/MyArticle.vue')
+      component: () => import('./views/MyArticle.vue'),
+      children: [
+        {
+          path: '/insert',
+          name: 'insert',
+          component: () => import('./components/Insert.vue')
+        }
+      ]
     },
     {
       path: '/login',
