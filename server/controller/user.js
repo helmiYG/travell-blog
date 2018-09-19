@@ -49,8 +49,8 @@ module.exports = {
 
                     res.status(200).json({
                         msg: 'succes login',
-                        token
-                        
+                        token,
+                        id: result._id
                     })
                 } else {
                     res.status(400).json({

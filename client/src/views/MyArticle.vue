@@ -2,22 +2,58 @@
   <div class="about">
      <div class="container">
         <div class="row">
-          <MyWidget></MyWidget>
-          <MyContent></MyContent>
+          <MyWidget :getmyarticles="newArt" @sentidupdate="getIdtoUpdate"></MyWidget>
+          <router-view :getmyarticles="newArt" @sendarticle="getarticle" :getidtoupdate="idUpdate"></router-view>
         </div>
      </div>
   </div>
 </template>
 
 <script>
-import MyContent from '@/components/MyContent'
 import MyWidget from '@/components/MyWidget'
-// import MyWidget from '@/components/MyWidget.vue'
+import axios from 'axios'
 export default {
   name: 'my-article',
   components: {
-    MyContent,
     MyWidget
+  },
+  data () {
+    return {
+      token: '',
+      newArt: '',
+      idUpdate: false
+    }
+  },
+  methods: {
+    getarticle (value) {
+      this.newArt = value
+    },
+    getIdtoUpdate (value) {
+      console.log(value, 'ini di myarticle parent')
+      if (value) {
+        if (this.idUpdate) {
+          this.idUpdate = false
+        } else {
+          this.idUpdate = true
+        }
+      }
+    }
+  },
+  created () {
+    this.token = localStorage.getItem('token')
+    axios({
+      method: 'GET',
+      url: 'http://localhost:3000/articles/userarticles',
+      headers: {
+        token: this.token
+      }
+    })
+      .then((result) => {
+        this.myarticles = result.data.result
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 }
 </script>

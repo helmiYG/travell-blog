@@ -1,51 +1,23 @@
 <template>
      <div class="col-md-8">
-          <h1 class="my-4">Page Heading
-            <small>Secondary Text</small>
+          <h1 class="my-4">Articles
+            <small>Traveller</small>
           </h1>
 
+        <!-- {{getmyarticles}} -->
           <!-- Blog Post -->
-          <div class="card mb-4">
-            <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
+          <div class="card mb-4" v-for="(article, index) in myarticles" :key="index">
+            <img class="card-img-top" :src='article.image' alt="Card image cap">
             <div class="card-body">
-              <h2 class="card-title">Post Title</h2>
-              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam. Dicta expedita corporis animi vero voluptate voluptatibus possimus, veniam magni quis!</p>
-              <a href="#" class="btn btn-primary">Read More &rarr;</a>
+              <h2 class="card-title"> {{article.title}} </h2>
+              <p class="card-text"> {{article.category}} </p>
+              <!-- <a href="#" class="btn btn-primary">  Read More &rarr;</a> -->
+              <router-link :to="`/myarticles/${article._id}`"> <button class="btn btn-primary"> Read More &rarr; </button> </router-link>
             </div>
             <div class="card-footer text-muted">
-              Posted on January 1, 2017 by
-              <a href="#">Start Bootstrap</a>
+              Posted on  {{article.createdAt}}, by {{article.userId.name}}
             </div>
           </div>
-
-          <!-- Blog Post -->
-          <div class="card mb-4">
-            <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
-            <div class="card-body">
-              <h2 class="card-title">Post Title</h2>
-              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam. Dicta expedita corporis animi vero voluptate voluptatibus possimus, veniam magni quis!</p>
-              <a href="#" class="btn btn-primary">Read More &rarr;</a>
-            </div>
-            <div class="card-footer text-muted">
-              Posted on January 1, 2017 by
-              <a href="#">Start Bootstrap</a>
-            </div>
-          </div>
-
-          <!-- Blog Post -->
-          <div class="card mb-4">
-            <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
-            <div class="card-body">
-              <h2 class="card-title">Post Title</h2>
-              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam. Dicta expedita corporis animi vero voluptate voluptatibus possimus, veniam magni quis!</p>
-              <a href="#" class="btn btn-primary">Read More &rarr;</a>
-            </div>
-            <div class="card-footer text-muted">
-              Posted on January 1, 2017 by
-              <a href="#">Start Bootstrap</a>
-            </div>
-          </div>
-
           <!-- Pagination -->
           <ul class="pagination justify-content-center mb-4">
             <li class="page-item">
@@ -60,7 +32,40 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
-
+  props: ['getmyarticles'],
+  data () {
+    return {
+      myarticles: [],
+      token: ''
+    }
+  },
+  methods: {
+    getArticle () {
+      this.token = localStorage.getItem('token')
+      axios({
+        method: 'GET',
+        url: 'http://localhost:3000/articles/userarticles',
+        headers: {
+          token: this.token
+        }
+      })
+        .then((result) => {
+          this.myarticles = result.data.result
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
+  },
+  created () {
+    this.getArticle()
+  },
+  watch: {
+    getmyarticles () {
+      this.getArticle()
+    }
+  }
 }
 </script>

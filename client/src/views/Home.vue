@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row">
         <Widget></Widget>
-        <router-view :gettoken="token"></router-view>
+        <router-view :gettoken="token" :islogoutfromhome="islogoutfromapp"></router-view>
       </div>
     </div>
   </div>
@@ -14,6 +14,7 @@
 import Widget from '@/components/Widget'
 import MainContent from '@/components/MainContent.vue'
 export default {
+  props: ['islogoutfromapp'],
   name: 'home',
   components: {
     Widget,
@@ -26,7 +27,9 @@ export default {
     }
   },
   watch: {
-    
+    islogoutfromapp () {
+      console.log('masuk watch home');
+    }
   },
   created() {
     const isToken = localStorage.getItem('token')

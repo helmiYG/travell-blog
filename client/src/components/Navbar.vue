@@ -54,6 +54,7 @@ export default {
       } else {
         this.isLogout = true
       }
+      this.$router.push('/')
     }
   },
   created () {
@@ -69,6 +70,7 @@ export default {
 
     isLogout () {
       this.token = false
+      this.$emit('sendislogout', this.token)
     }
   }
 }

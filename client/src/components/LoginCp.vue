@@ -58,11 +58,8 @@ export default {
         })
           .then((result) => {
             localStorage.setItem('token', result.data.token)
-            // this.token = localStorage.getItem('token')
-            // console.log('masuk')
-            // console.log(this.$router,'---router');
+            localStorage.setItem('idLogin', result.data.id)
             this.$router.push('/')
-            // this.$router.go('/')
           })
           .catch((err) => {
             this.msgErr.push(err.response.data.msg)

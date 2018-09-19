@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <Navbar :isloginfromapp="islogin"></Navbar>
-      <router-view @sendtokenfromhome="gettokenfromhome"></router-view>
+    <Navbar :isloginfromapp="islogin" @sendislogout="getislogout"></Navbar>
+      <router-view @sendtokenfromhome="gettokenfromhome" :islogoutfromapp="isLogout"></router-view>
     <Footer></Footer>
   </div>
 </template>
@@ -17,7 +17,8 @@ export default {
   },
   data () {
     return {
-      islogin: false
+      islogin: false,
+      isLogout: true
     }
   },
   methods: {
@@ -27,6 +28,17 @@ export default {
           this.islogin = false
         } else {
           this.islogin = true
+        }
+      }
+    },
+    getislogout (value) {
+      console.log('nasuk app');
+      
+      if (!value) {
+        if (this.isLogout) {
+          this.isLogout = false
+        } else {
+          this.isLogout = true
         }
       }
     }

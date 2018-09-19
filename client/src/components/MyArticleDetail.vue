@@ -1,17 +1,30 @@
 <template>
-   <div class="col-md-8">
+    <div class="col-md-8">
         <div class="detail">
+          <div class="card text-center">
+            <img class="card-img-top" :src="article.image" alt="Card image cap">
+            <div class="card-header">
+              Featured
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">{{article.title}} </h5>
+              <p class="card-text">{{article.content}}</p>
+              <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+            <div class="card-footer text-muted">
+              2 days ago
+            </div>
+          </div>
             <div>
                 <img :src="article.image" alt="article image">
                     <h1> {{article.title}} </h1>
                     <p> {{article.content}} </p>
                     <hr> 
                     <!-- <p>author {{article.userId.name}}</p> -->
-                    <p>Posted {{article.createdAt | moment("dddd, MMMM Do YYYY")}} </p>
-                    <p>Author: {{article.userId.name}} </p>
-                    <br><br>
+                    <p>posted {{article.createdAt}} </p>
+                    <button class="btn btn-success btn-xs" @click="edit(article._id)">EDIT</button> || <button class="btn btn-danger btn-xs" @click="deleteArticle(article._id)">DELETE</button>
             </div>
-            <div v-if="article.comments.length > 0">
+             <div v-if="article.comments.length > 0">
               <h3>All Comment</h3>
               <div class="row">
                 <div class="col-md-12"  v-for="(comment, i) in article.comments" v-bind:key="i">
@@ -37,22 +50,21 @@
                 <button type="submit" class="btn btn-success" @click="addComment(article._id)" >  Comment </button>
             </div>
         </div>
-    </div>
+        </div>
 </template>
 
 <script>
 import axios from 'axios'
 export default {
-  props: ['gettoken', 'islogoutfromhome'],
   data () {
     return {
       article: '',
-      comment: '',
-      readAgain: '',
+      id: this.$route.params.id,
       userLogin: '',
       token: ''
     }
   },
+  props: ['getidtoupdate'],
   methods: {
     getOneArticle () {
       this.id = this.$route.params.id
@@ -61,26 +73,27 @@ export default {
         url: `http://localhost:3000/articles/${this.id}/detailarticle`
       })
         .then((result) => {
+          console.log(result)
           this.article = result.data
         })
         .catch((err) => {
           console.log(err)
         })
     },
-    addComment (id) {
+    edit (id) {
+      this.$router.push(`/myarticles/${id}/edit`)
+    },
+    deleteArticle(id) {
       axios({
-        method: 'PUT',
-        url: `http://localhost:3000/articles/${id}/comment`,
+        method: 'DELETE',
+        url: `http://localhost:3000/articles/${this.id}`,
         headers: {
           token: localStorage.getItem('token')
-        },
-        data: {
-          comment: this.comment
         }
       })
         .then((result) => {
-          console.log('ini ',result)
-          this.readAgain = result
+          console.log(result)
+          this.$router.push('/myarticles')
         })
         .catch((err) => {
           console.log(err)
@@ -89,33 +102,21 @@ export default {
   },
   created () {
     this.getOneArticle()
-    this.token = localStorage.getItem('token')
     this.userLogin = localStorage.getItem('idLogin')
+    this.token = localStorage.getItem('token')
   },
   watch: {
-    getisloginfromhome () {
-      this.token = true
-    },
     '$route.params.id': function() {
       this.getOneArticle()
       this.userLogin = localStorage.getItem('idLogin')
       this.token = localStorage.getItem('token')
-    },
-    readAgain () {
-      this.getOneArticle()
-    },
-    islogoutfromhome () {
-      console.log('masuk watch detail article');
-      
-      this.token = false
     }
   }
 }
 </script>
 
-<style>
- .detail{
-   margin-top: 50px;
-   margin-bottom: 20px
- }
+<style scoped>
+.detail {
+    margin-top: 100px
+}
 </style>

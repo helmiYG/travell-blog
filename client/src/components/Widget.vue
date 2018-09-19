@@ -16,13 +16,13 @@
 
             <!-- Categories Widget -->
             <div class="card my-4">
-              <h5 class="card-header">Categories</h5>
+              <h5 class="card-header">Article List</h5>
               <div class="card-body">
                 <div class="row">
                   <div class="list-article">
                     <ul class="list-unstyled mb-0">
                       <li v-for="(article, idx) in articles" :key="idx">
-                        <router-link :to="`/article/${article.id}`">{{article.title}}</router-link>
+                        <router-link :to="`/articles/${article._id}`">{{article.title}}</router-link>
                       </li>
                     </ul>
                   </div>
@@ -43,29 +43,37 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data () {
     return {
-      articles: [
-        {
-          id: '1',
-          title: 'title 1',
-          category: 'sport 1',
-          content: '1 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam. Dicta expedita corporis animi vero voluptate voluptatibus possimus, veniam magni quis!'
-        },
-        {
-          id: '2',
-          title: 'title 2',
-          category: 'sport 2',
-          content: '2 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam. Dicta expedita corporis animi vero voluptate voluptatibus possimus, veniam magni quis!'
-        },
-        {
-          id: '3',
-          title: 'title 3',
-          category: 'sport 3',
-          content: '3 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam. Dicta expedita corporis animi vero voluptate voluptatibus possimus, veniam magni quis!'
-        }
-      ]
+      articles: []
+    }
+  },
+  methods: {
+    getArticle () {
+      this.token = localStorage.getItem('token')
+      axios({
+        method: 'GET',
+        url: 'http://localhost:3000/articles',
+      })
+        .then(({data}) => {
+          this.articles = data.result
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
+  },
+  created () {
+    this.getArticle()
+  },
+   watch: {
+    getmyarticles () {
+      this.getArticle()
+    },
+    '$route.params.id': function() {
+      this.getArticle()
     }
   }
 }
@@ -73,7 +81,7 @@ export default {
 
 <style>
 .main-widget{
-  padding-top: 100px;
+  margin-top: 50px;
 }
 .list-article{
   margin-left:auto;

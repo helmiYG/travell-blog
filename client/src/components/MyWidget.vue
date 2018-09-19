@@ -1,7 +1,7 @@
 <template>
        <div class="col-md-4">
           <!-- Search Widget -->
-          <button type="button" class="btn btn-secondary button-add">Add New Article</button>
+          <router-link to="/myarticles/insert">  <button type="button" class="btn btn-secondary button-add">Add New Article</button> </router-link>
           <div class="card my-4">
             <h5 class="card-header">Search</h5>
             <div class="card-body">
@@ -16,44 +16,62 @@
 
           <!-- Categories Widget -->
           <div class="card my-4">
-            <h5 class="card-header">List Articles</h5>
-            <div class="card-body">
-              <div class="row">
-                <div class="col-lg-6">
-                  <ul class="list-unstyled mb-0">
-                    <li>
-                      <a href="#">Web Design</a>
-                    </li>
-                    <li>
-                      <a href="#">HTML</a>
-                    </li>
-                    <li>
-                      <a href="#">Freebies</a>
-                    </li>
-                  </ul>
-                </div>
-                <div class="col-lg-6">
-                  <ul class="list-unstyled mb-0">
-                    <li>
-                      <a href="#">JavaScript</a>
-                    </li>
-                    <li>
-                      <a href="#">CSS</a>
-                    </li>
-                    <li>
-                      <a href="#">Tutorials</a>
-                    </li>
-                  </ul>
+              <h5 class="card-header">Article</h5>
+              <div class="card-body">
+                <div class="row">
+                  <div class="list-article">
+                    <ul class="list-unstyled mb-0">
+                      <li v-for="(article, idx) in myarticle" :key="idx">
+                        <router-link :to="{name: 'detail-my-article', params: {id : article._id}}"> {{article.title}}</router-link>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
         </div>
 </template>
 
 <script>
+import axios from 'axios'
 export default {
-
+  props: ['getmyarticles'],
+  data () {
+    return {
+      myarticle: [],
+      send: true
+    }
+  },
+  methods: {
+    getArticle () {
+      this.token = localStorage.getItem('token')
+      axios({
+        method: 'GET',
+        url: 'http://localhost:3000/articles/userarticles',
+        headers: {
+          token: this.token
+        }
+      })
+        .then(({data}) => {
+          this.myarticle = data.result
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+  },
+  created () {
+    this.getArticle()
+  },
+  watch: {
+    getmyarticles () {
+      this.getArticle()
+    },
+    '$route.params.id': function() {
+      console.log('---- ada perubahan id')
+      this.getArticle()
+    }
+  }
 }
 </script>
 

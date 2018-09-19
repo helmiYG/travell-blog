@@ -20,7 +20,7 @@ export default new Router({
           component: () => import('./components/Article.vue')
         },
         {
-          path: '/article/:id',
+          path: '/articles/:id',
           name: 'detail-article',
           props: true,
           component: () => import('./components/DetailArticle.vue')
@@ -33,9 +33,27 @@ export default new Router({
       component: () => import('./views/MyArticle.vue'),
       children: [
         {
-          path: '/insert',
+          path: '/myarticles',
+          name: 'my-article',
+          component: () => import('./components/MyContent.vue')
+        },
+        {
+          path: '/myarticles/insert',
           name: 'insert',
+          props: true,
           component: () => import('./components/Insert.vue')
+        },
+        {
+          path: '/myarticles/:id',
+          name: 'detail-my-article',
+          props: true,
+          component: () => import('./components/MyArticleDetail.vue')
+        },
+        {
+          path: '/myarticles/:id/edit',
+          name: 'detail-my-article',
+          props: true,
+          component: () => import('./components/Edit.vue')
         }
       ]
     },
