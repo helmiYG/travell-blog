@@ -16,20 +16,22 @@
                  <router-link class="route-link" to="/myarticles" v-if="token">My Articles</router-link>
               </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" v-if="!token">
               <a class="nav-link">
                 <router-link class="route-link" to="/login" v-if="!token">Login</router-link>
               </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" v-if="!token">
               <a class="nav-link">
                  <router-link class="route-link" to="/register" v-if="!token">Register</router-link>
               </a>
             </li>
              <li class="nav-item">
-              <a class="nav-link" v-if="token" @click="logout">
-               Logout
-              </a>
+               <div style="margin-top: 8px" v-if="token">
+                <a href="#" v-if="token" @click="logout" style="color: white; text-decoration: none">
+                Logout
+                </a>
+               </div>
             </li>
           </ul>
         </div>

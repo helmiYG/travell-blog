@@ -3,7 +3,6 @@
           <h1 class="my-4">Articles
             <small>Traveller</small>
           </h1>
-
         <!-- {{getmyarticles}} -->
           <!-- Blog Post -->
           <div class="card mb-4" v-for="(article, index) in myarticles" :key="index">
@@ -18,16 +17,6 @@
               Posted on  {{article.createdAt}}, by {{article.userId.name}}
             </div>
           </div>
-          <!-- Pagination -->
-          <ul class="pagination justify-content-center mb-4">
-            <li class="page-item">
-              <a class="page-link" href="#">&larr; Older</a>
-            </li>
-            <li class="page-item disabled">
-              <a class="page-link" href="#">Newer &rarr;</a>
-            </li>
-          </ul>
-
         </div>
 </template>
 
@@ -65,6 +54,9 @@ export default {
   watch: {
     getmyarticles () {
       this.getArticle()
+    },
+    searchfromhome () {
+      console.log(this.searchfromhome)
     }
   }
 }

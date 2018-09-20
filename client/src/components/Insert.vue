@@ -16,7 +16,8 @@
                     </tr>
                      <tr>
                         <th>Content</th>
-                        <td> <textarea name="content" id="content" cols="100" rows="10" v-model="content" class="form-control"></textarea> </td>
+                        <!-- <td> <textarea name="content" id="content" cols="100" rows="10" v-model="content" class="form-control"></textarea> </td> -->
+                        <wysiwyg v-model="myHTML" />
                     </tr>
                     <tr>
                         <th>Image</th>
@@ -38,7 +39,8 @@ export default {
       category: '',
       content: '',
       image: '',
-      newArt: ''
+      newArt: '',
+      myHTML: ''
     }
   },
   methods: {
@@ -61,14 +63,14 @@ export default {
             data: {
               title: this.title,
               category: this.category,
-              content: this.content,
+              content: this.myHTML,
               image: result.data.link
             }
           })
             .then((result) => {
               console.log(result)
               this.title = ''
-              this.content = ''
+              this.myHTML = ''
               this.category = ''
               this.newArt = result.data.link
             })

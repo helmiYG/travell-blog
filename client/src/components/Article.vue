@@ -4,7 +4,7 @@
             <small>Traveller</small>
           </h1>
           <!-- Blog Post -->
-          <div class="card mb-4" v-for="(article, idx) in articles" :key="idx">
+          <div class="card mb-4" v-for="(article, idx) in show" :key="idx">
             <img class="card-img-top" :src="article.image" alt="Card image cap">
             <div class="card-body">
               <h2 class="card-title"> {{article.title}} </h2>
@@ -14,17 +14,17 @@
             <div class="card-footer text-muted">
               Posted
               {{ article.createdAt | moment("dddd, MMMM Do YYYY") }} <br>
-              Author: 
-              <a href="#">{{article.userId.name}}</a>
+              Author:
+              <a href="#">{{article.userId.name}} </a>
             </div>
           </div>
           <!-- Pagination -->
           <ul class="pagination justify-content-center mb-4">
             <li class="page-item">
-              <a class="page-link" href="#">&larr; Older</a>
+              <a class="page-link" v-if="counter > 0" @click="chCountermin">&larr; Older</a>
             </li>
-            <li class="page-item disabled">
-              <a class="page-link" href="#">Newer &rarr;</a>
+            <li class="page-item">
+              <a class="page-link" v-if="articles.length-2 > counter" @click="chCounterplus">Newer &rarr;</a>
             </li>
           </ul>
 
@@ -34,9 +34,13 @@
 <script>
 import axios from 'axios'
 export default {
+  props: ['searchfromhome'],
   data () {
     return {
-      articles: []
+      articles: [],
+      temp: [],
+      counter: 0,
+      show: []
     }
   },
   methods: {
@@ -47,15 +51,42 @@ export default {
       })
         .then((result) => {
           this.articles = result.data.result
+          this.temp = result.data.result
+          this.show = []
+          this.articles.forEach((page, index) => {
+            if (index < this.counter+2 && index >= this.counter) {
+              this.show.push(page)
+            }
+          })
         })
         .catch((err) => {
           console.log(err)
-        });
-    }
+        })
+    },
+    chCounterplus () {
+      this.counter += 2
+    },
+    chCountermin () {
+      this.counter -= 2
+    },
   },
-  created() {
+  created () {
+    this.getAllArticle()
+  },
+  watch: {
+    searchfromhome () {
+      this.show = []
+      this.temp.forEach(article => {
+        if (article.title.toLowerCase().indexOf(this.searchfromhome.toLowerCase()) > -1) {
+          this.show.push(article)
+        }
+      })
+    }, 
+    counter () {
     this.getAllArticle()
   }
+  },
+  
 }
 </script>
 

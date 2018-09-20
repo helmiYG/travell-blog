@@ -32,8 +32,7 @@ export default {
       }
     },
     getislogout (value) {
-      console.log('nasuk app');
-      
+      console.log('nasuk app')
       if (!value) {
         if (this.isLogout) {
           this.isLogout = false
@@ -46,6 +45,7 @@ export default {
 }
 </script>
 <style>
+@import "~vue-wysiwyg/dist/vueWysiwyg.css";
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

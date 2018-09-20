@@ -1,17 +1,23 @@
 <template>
    <div class="col-md-8">
         <div class="detail">
-            <div>
-                <img :src="article.image" alt="article image">
-                    <h1> {{article.title}} </h1>
-                    <p> {{article.content}} </p>
-                    <hr> 
-                    <!-- <p>author {{article.userId.name}}</p> -->
-                    <p>Posted {{article.createdAt | moment("dddd, MMMM Do YYYY")}} </p>
-                    <p>Author: {{article.userId.name}} </p>
-                    <br><br>
+            <div class="card text-center">
+              <br>
+            <h1 class="card-title">{{article.title}} </h1>
+            <img class="card-img-top" :src="article.image" alt="Card image cap">
+            <div class="card-header">
+               {{ article.createdAt | moment("dddd, MMMM Do YYYY") }}
             </div>
+            <div class="card-body">
+              <p v-html="article.content" class="card-text"></p>
+            </div>
+            <div class="card-footer text-muted">
+             Author: {{article.userId.name}}
+            
+            </div>
+          </div>
             <div v-if="article.comments.length > 0">
+              <br>
               <h3>All Comment</h3>
               <div class="row">
                 <div class="col-md-12"  v-for="(comment, i) in article.comments" v-bind:key="i">
@@ -22,18 +28,19 @@
                               <div class="card-body">
                                 <h5 class="card-title"> {{comment.comment}} </h5>
                                 <p class="card-text"> by : {{comment.commenterName}} </p>
-                                <a class="btn btn-danger" @click="deleteComment(comment._id)" v-if="comment.commenterId == userLogin && token || article.userId._id == userLogin && token">Delete</a>
+                                <a class="btn btn-danger btn-sm" @click="deleteComment(comment._id)" v-if="comment.commenterId == userLogin && token || article.userId._id == userLogin && token"><i class="fas fa-trash-alt"></i></a>
                               </div>
                         </div>
                   </div>
               </div>
             </div>
           <div v-else>
+            <br>
               <h3>No Comments Available</h3>
             </div>
               <div style="margin-top : 10px" v-if="token">
                 <label> Input Comment </label><br>
-                <input type="text" style="height : 40px; width : 900px" v-model="comment">
+                <input type="text" class="form-control" v-model="comment">
                 <button type="submit" class="btn btn-success" @click="addComment(article._id)" >  Comment </button>
             </div>
         </div>
@@ -50,7 +57,8 @@ export default {
       comment: '',
       readAgain: '',
       userLogin: '',
-      token: ''
+      token: '',
+      idArt: ''
     }
   },
   methods: {
@@ -62,6 +70,7 @@ export default {
       })
         .then((result) => {
           this.article = result.data
+          this.idArt = result.data._id
         })
         .catch((err) => {
           console.log(err)
@@ -79,7 +88,22 @@ export default {
         }
       })
         .then((result) => {
-          console.log('ini ',result)
+          this.readAgain = result
+          this.comment = ''
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    deleteComment (idcomment) {
+      axios({
+        method: 'PUT',
+        url: `http://localhost:3000/articles/${this.idArt}/comment/${idcomment}/delete`,
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+        .then((result) => {
           this.readAgain = result
         })
         .catch((err) => {
@@ -91,22 +115,23 @@ export default {
     this.getOneArticle()
     this.token = localStorage.getItem('token')
     this.userLogin = localStorage.getItem('idLogin')
+    console.log('masuk article detail cr')
+    this.$emit('hidefromdetail')
   },
   watch: {
     getisloginfromhome () {
       this.token = true
     },
-    '$route.params.id': function() {
+    '$route.params.id': function () {
       this.getOneArticle()
       this.userLogin = localStorage.getItem('idLogin')
       this.token = localStorage.getItem('token')
+      console.log('masuk article detail wt')
     },
     readAgain () {
       this.getOneArticle()
     },
     islogoutfromhome () {
-      console.log('masuk watch detail article');
-      
       this.token = false
     }
   }

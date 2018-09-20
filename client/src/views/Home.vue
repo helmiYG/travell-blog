@@ -2,8 +2,8 @@
   <div class="home">
     <div class="container">
       <div class="row">
-        <Widget></Widget>
-        <router-view :gettoken="token" :islogoutfromhome="islogoutfromapp"></router-view>
+        <Widget @sendtosearch="gettosearch" :hidefromhome="hide"></Widget>
+        <router-view :gettoken="token" :islogoutfromhome="islogoutfromapp" :searchfromhome="toSearch" @hidefromdetail="gethide"></router-view>
       </div>
     </div>
   </div>
@@ -12,26 +12,38 @@
 <script>
 // @ is an alias to /src
 import Widget from '@/components/Widget'
-import MainContent from '@/components/MainContent.vue'
 export default {
   props: ['islogoutfromapp'],
   name: 'home',
   components: {
-    Widget,
-    MainContent
+    Widget
   },
   data () {
     return {
       login: this.isloginfromapp,
-      token: ''
+      token: '',
+      toSearch: '',
+      hide: true
+    }
+  },
+  methods: {
+    gettosearch (value) {
+      this.toSearch = value
+    },
+    gethide () {
+      if (this.hide) {
+        this.hide = false
+      } else {
+        this.hide = true
+      }
     }
   },
   watch: {
     islogoutfromapp () {
-      console.log('masuk watch home');
+      console.log('masuk watch home')
     }
   },
-  created() {
+  created () {
     const isToken = localStorage.getItem('token')
     this.token = isToken
     this.$emit('sendtokenfromhome', this.token)
