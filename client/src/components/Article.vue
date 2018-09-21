@@ -21,10 +21,10 @@
           <!-- Pagination -->
           <ul class="pagination justify-content-center mb-4">
             <li class="page-item">
-              <a class="page-link" v-if="counter > 0" @click="chCountermin">&larr; Older</a>
+              <a class="page-link" v-if="counter > 0" @click="chCountermin">&larr; </a>
             </li>
             <li class="page-item">
-              <a class="page-link" v-if="articles.length-2 > counter" @click="chCounterplus">Newer &rarr;</a>
+              <a class="page-link" v-if="articles.length-2 > counter" @click="chCounterplus"> &rarr;</a>
             </li>
           </ul>
 

@@ -16,7 +16,7 @@
                     </tr>
                      <tr>
                         <th>Content</th>
-                        <td> <textarea name="content" id="content" cols="100" rows="10" v-model="content" class="form-control"></textarea> <br>
+                        <td>  <wysiwyg v-model="content" /> <br>
                               <button type="submit" class="btn btn-success" @click="edit">Submit</button>
                         </td>
                     </tr>

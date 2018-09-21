@@ -13,7 +13,7 @@
             </div>
             <div class="card-footer text-muted">
              Author: {{article.userId.name}}
-            
+            <facebook :url="url" ></facebook>
             </div>
           </div>
             <div v-if="article.comments.length > 0">
@@ -49,7 +49,11 @@
 
 <script>
 import axios from 'axios'
+import {Facebook} from 'vue-socialmedia-share'
 export default {
+  components: {
+    Facebook
+  },
   props: ['gettoken', 'islogoutfromhome'],
   data () {
     return {
@@ -58,7 +62,8 @@ export default {
       readAgain: '',
       userLogin: '',
       token: '',
-      idArt: ''
+      idArt: '',
+      url: 'https://traveller-blog.helmiyogantara.club/'
     }
   },
   methods: {
