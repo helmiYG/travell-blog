@@ -7,13 +7,17 @@
             <img class="card-img-top" :src="article.image" alt="Card image cap">
             <div class="card-header">
                {{ article.createdAt | moment("dddd, MMMM Do YYYY") }}
+               <br>
+                 Author: {{article.userId.name}}
             </div>
             <div class="card-body">
               <p v-html="article.content" class="card-text"></p>
             </div>
             <div class="card-footer text-muted">
-             Author: {{article.userId.name}}
-            <facebook :url="url" ></facebook>
+              Share
+            <div class="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button_count" data-size="small" data-mobile-iframe="true">
+            <a target="_blank" :href="urltwitter+twitterText+currenttwitter"><i class="fab fa-twitter" style="font-size:20px;"></i></a>
+            <a target="_blank" :href="url+current+t" class="fb-xfbml-parse-ignore"><i class="fab fa-facebook-square" style="font-size: 20px"></i></a></div>
             </div>
           </div>
             <div v-if="article.comments.length > 0">
@@ -49,11 +53,7 @@
 
 <script>
 import axios from 'axios'
-import {Facebook} from 'vue-socialmedia-share'
 export default {
-  components: {
-    Facebook
-  },
   props: ['gettoken', 'islogoutfromhome'],
   data () {
     return {
@@ -63,7 +63,11 @@ export default {
       userLogin: '',
       token: '',
       idArt: '',
-      url: 'https://traveller-blog.helmiyogantara.club/'
+      current: '',
+      twitterText: '',
+      currenttwitter: '',
+      urltwitter: 'http://twitter.com/share?text=',
+      url: `https://www.facebook.com/sharer/sharer.php?u=`
     }
   },
   methods: {
@@ -76,29 +80,32 @@ export default {
         .then((result) => {
           this.article = result.data
           this.idArt = result.data._id
+          this.twitterText = result.data.title
         })
         .catch((err) => {
           console.log(err)
         })
     },
     addComment (id) {
-      axios({
-        method: 'PUT',
-        url: `http://localhost:3000/articles/${id}/comment`,
-        headers: {
-          token: localStorage.getItem('token')
-        },
-        data: {
-          comment: this.comment
-        }
-      })
-        .then((result) => {
-          this.readAgain = result
-          this.comment = ''
+      if (this.comment) {
+        axios({
+          method: 'PUT',
+          url: `http://localhost:3000/articles/${id}/comment`,
+          headers: {
+            token: localStorage.getItem('token')
+          },
+          data: {
+            comment: this.comment
+          }
         })
-        .catch((err) => {
-          console.log(err)
-        })
+          .then((result) => {
+            this.readAgain = result
+            this.comment = ''
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+      }
     },
     deleteComment (idcomment) {
       axios({
@@ -120,7 +127,8 @@ export default {
     this.getOneArticle()
     this.token = localStorage.getItem('token')
     this.userLogin = localStorage.getItem('idLogin')
-    console.log('masuk article detail cr')
+    this.current = 'https://traveller-blog.helmiyogantara.club' + window.location.pathname
+    this.currenttwitter = '&url=https://traveller-blog.helmiyogantara.club' + window.location.pathname
     this.$emit('hidefromdetail')
   },
   watch: {
@@ -131,6 +139,8 @@ export default {
       this.getOneArticle()
       this.userLogin = localStorage.getItem('idLogin')
       this.token = localStorage.getItem('token')
+      this.currenttwitter = '&url=https://traveller-blog.helmiyogantara.club' + window.location.pathname
+      this.current = 'https://traveller-blog.helmiyogantara.club' + window.location.pathname
       console.log('masuk article detail wt')
     },
     readAgain () {

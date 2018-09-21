@@ -7,15 +7,19 @@
             <img class="card-img-top" :src="article.image" alt="Card image cap">
             <div class="card-header">
                {{ article.createdAt | moment("dddd, MMMM Do YYYY") }}
+               <br>
+               Author: {{article.userId.name}}
             </div>
             <div class="card-body">
-             
               <p v-html="article.content" class="card-text"></p>
               <button class="btn btn-success btn-sm" @click="edit(article._id)"><i class="fas fa-edit"></i></button>
               <button class="btn btn-danger btn-sm" @click="deleteArticle(article._id)"><i class="fas fa-trash-alt"></i></button>
             </div>
             <div class="card-footer text-muted">
-             Author: {{article.userId.name}}
+                Share
+            <div class="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button_count" data-size="small" data-mobile-iframe="true">
+            <a target="_blank" :href="urltwitter+twitterText+currenttwitter"><i class="fab fa-twitter" style="font-size:20px;"></i></a>
+            <a target="_blank" :href="url+current+t" class="fb-xfbml-parse-ignore"><i class="fab fa-facebook-square" style="font-size: 20px"></i></a></div>
             </div>
           </div>
           <div v-if="article.comments.length > 0">
@@ -58,7 +62,12 @@ export default {
       userLogin: '',
       token: '',
       readAgain: '',
-      idArt: ''
+      idArt: '',
+      current: '',
+      twitterText: '',
+      currenttwitter: '',
+      urltwitter: 'http://twitter.com/share?text=',
+      url: `https://www.facebook.com/sharer/sharer.php?u=`
     }
   },
   props: ['getidtoupdate'],
@@ -73,6 +82,7 @@ export default {
           console.log(result)
           this.article = result.data
           this.idArt = result.data._id
+          this.twitterText = result.data.title
         })
         .catch((err) => {
           console.log(err)
@@ -134,6 +144,8 @@ export default {
   created () {
     this.getOneArticle()
     this.userLogin = localStorage.getItem('idLogin')
+    this.current = 'https://traveller-blog.helmiyogantara.club' + window.location.pathname
+    this.currenttwitter = '&url=https://traveller-blog.helmiyogantara.club' + window.location.pathname
     this.token = localStorage.getItem('token')
   },
   watch: {
@@ -141,6 +153,8 @@ export default {
       this.getOneArticle()
       this.userLogin = localStorage.getItem('idLogin')
       this.token = localStorage.getItem('token')
+      this.currenttwitter = '&url=https://traveller-blog.helmiyogantara.club' + window.location.pathname
+      this.current = 'https://traveller-blog.helmiyogantara.club' + window.location.pathname
     },
     readAgain () {
       this.getOneArticle()
