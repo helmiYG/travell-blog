@@ -69,7 +69,7 @@ export default {
       if (this.msgErr.length < 1) {
         axios({
           method: 'POST',
-          url: 'http://localhost:3000/users/register',
+          url: 'https://server-traveller-blog.helmiyogantara.club/users/register',
           data: {
             name: this.name,
             email: this.email,

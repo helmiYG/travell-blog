@@ -35,7 +35,7 @@ export default {
       this.token = localStorage.getItem('token')
       axios({
         method: 'GET',
-        url: 'http://localhost:3000/articles/userarticles',
+        url: 'https://server-traveller-blog.helmiyogantara.club/articles/userarticles',
         headers: {
           token: this.token
         }

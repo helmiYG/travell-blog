@@ -50,7 +50,7 @@ export default {
       if (this.msgErr.length < 1) {
         axios({
           method: 'POST',
-          url: 'http://localhost:3000/users/login',
+          url: 'https://server-traveller-blog.helmiyogantara.club/users/login',
           data: {
             email: this.email,
             password: this.password

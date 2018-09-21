@@ -14,8 +14,7 @@
             <div class="card-footer text-muted">
               Posted
               {{ article.createdAt | moment("dddd, MMMM Do YYYY") }} <br>
-              Author:
-              <a href="#">{{article.userId.name}} </a>
+              Author: {{article.userId.name}}
             </div>
           </div>
           <!-- Pagination -->
@@ -47,14 +46,14 @@ export default {
     getAllArticle () {
       axios({
         method: 'GET',
-        url: 'http://localhost:3000/articles'
+        url: 'https://server-traveller-blog.helmiyogantara.club/articles'
       })
         .then((result) => {
           this.articles = result.data.result
           this.temp = result.data.result
           this.show = []
           this.articles.forEach((page, index) => {
-            if (index < this.counter+2 && index >= this.counter) {
+            if (index < this.counter + 2 && index >= this.counter) {
               this.show.push(page)
             }
           })
@@ -68,7 +67,7 @@ export default {
     },
     chCountermin () {
       this.counter -= 2
-    },
+    }
   },
   created () {
     this.getAllArticle()
@@ -81,12 +80,11 @@ export default {
           this.show.push(article)
         }
       })
-    }, 
+    },
     counter () {
-    this.getAllArticle()
+      this.getAllArticle()
+    }
   }
-  },
-  
 }
 </script>
 

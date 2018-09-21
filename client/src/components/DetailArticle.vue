@@ -13,11 +13,11 @@
             <div class="card-body">
               <p v-html="article.content" class="card-text"></p>
             </div>
-            <div class="card-footer text-muted">
+            <div class="card-footer text-muted" v-if="token">
               Share
             <div class="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button_count" data-size="small" data-mobile-iframe="true">
             <a target="_blank" :href="urltwitter+twitterText+currenttwitter"><i class="fab fa-twitter" style="font-size:20px;"></i></a>
-            <a target="_blank" :href="url+current+t" class="fb-xfbml-parse-ignore"><i class="fab fa-facebook-square" style="font-size: 20px"></i></a></div>
+            <a target="_blank" :href="url+current" class="fb-xfbml-parse-ignore"><i class="fab fa-facebook-square" style="font-size: 20px"></i></a></div>
             </div>
           </div>
             <div v-if="article.comments.length > 0">
@@ -75,7 +75,7 @@ export default {
       this.id = this.$route.params.id
       axios({
         method: 'GET',
-        url: `http://localhost:3000/articles/${this.id}/detailarticle`
+        url: `https://server-traveller-blog.helmiyogantara.club/articles/${this.id}/detailarticle`
       })
         .then((result) => {
           this.article = result.data
@@ -90,7 +90,7 @@ export default {
       if (this.comment) {
         axios({
           method: 'PUT',
-          url: `http://localhost:3000/articles/${id}/comment`,
+          url: `https://server-traveller-blog.helmiyogantara.club/articles/${id}/comment`,
           headers: {
             token: localStorage.getItem('token')
           },
@@ -110,7 +110,7 @@ export default {
     deleteComment (idcomment) {
       axios({
         method: 'PUT',
-        url: `http://localhost:3000/articles/${this.idArt}/comment/${idcomment}/delete`,
+        url: `https://server-traveller-blog.helmiyogantara.club/articles/${this.idArt}/comment/${idcomment}/delete`,
         headers: {
           token: localStorage.getItem('token')
         }

@@ -44,7 +44,7 @@ export default {
       this.id = this.$route.params.id
       axios({
         method: 'GET',
-        url: `http://localhost:3000/articles/${this.id}/detailarticle`
+        url: `https://server-traveller-blog.helmiyogantara.club/articles/${this.id}/detailarticle`
       })
         .then((result) => {
           this.article = result.data
@@ -60,7 +60,7 @@ export default {
     edit () {
       axios({
         method: 'PUT',
-        url: `http://localhost:3000/articles/${this.id}`,
+        url: `https://server-traveller-blog.helmiyogantara.club/articles/${this.id}`,
         headers: {
           token: localStorage.getItem('token')
         },

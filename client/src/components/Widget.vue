@@ -50,7 +50,7 @@ export default {
       this.token = localStorage.getItem('token')
       axios({
         method: 'GET',
-        url: 'http://localhost:3000/articles'
+        url: 'https://server-traveller-blog.helmiyogantara.club/articles'
       })
         .then(({ data }) => {
           this.articles = data.result

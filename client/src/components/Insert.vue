@@ -51,12 +51,12 @@ export default {
       let formData = new FormData()
       let token = localStorage.getItem('token')
       formData.append('image', this.image)
-      axios.post('http://localhost:3000/upload', formData)
+      axios.post('https://server-traveller-blog.helmiyogantara.club/upload', formData)
         .then((result) => {
           console.log(result)
           axios({
             method: 'POST',
-            url: 'http://localhost:3000/articles',
+            url: 'https://server-traveller-blog.helmiyogantara.club/articles',
             headers: {
               token: token
             },

@@ -35,18 +35,18 @@ export default {
       this.token = localStorage.getItem('token')
       axios({
         method: 'GET',
-        url: 'http://localhost:3000/articles/userarticles',
+        url: 'https://server-traveller-blog.helmiyogantara.club/articles/userarticles',
         headers: {
           token: this.token
         }
       })
-        .then(({data}) => {
+        .then(({ data }) => {
           this.myarticle = data.result
         })
         .catch((err) => {
           console.log(err)
         })
-    },
+    }
   },
   created () {
     this.getArticle()
@@ -55,7 +55,7 @@ export default {
     getmyarticles () {
       this.getArticle()
     },
-    '$route.params.id': function() {
+    '$route.params.id': function () {
       console.log('---- ada perubahan id')
       this.getArticle()
     }
